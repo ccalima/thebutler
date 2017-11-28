@@ -5,6 +5,7 @@ const client = new Discord.Client();
 // google doc information
 var GoogleSpreadsheet = require('google-spreadsheet');
 var creds = require('./client_secret.json');
+var bot_token = require('./bot_secret.json');
 var doc = new GoogleSpreadsheet('1E1o3uWXYlDfo79pHzHkFHqGGPZjZikfCw53ITLHnNTs');
 
 // enrage server information
@@ -249,3 +250,5 @@ client.on('message', message => {
 	// 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
 	// }
 });
+
+client.login(bot_token.bot_token);
