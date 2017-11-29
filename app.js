@@ -180,7 +180,7 @@ client.on('message', message => {
 			message.channel.send("You have been added to the alliance raid for the week.");
     	}
     }
-    if (message.channel.name === 'crafts') {
+    if (message.channel.name === 'crafts-and-supplies') {
     	if (message.content.toLowerCase() === '-clear') {
       		if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
         		message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
