@@ -1,7 +1,7 @@
 // client information
 const Discord = require('discord.js');
 const client = new Discord.Client();
- 
+
 // google doc information
 var GoogleSpreadsheet = require('google-spreadsheet');
 var creds = require('./client_secret.json');
@@ -49,7 +49,7 @@ client.on('ready', () => {
 
 client.on('guildMemberAdd', member => {
 	entrancehall.send('Good day, ' + member.user.username + '. How may I help you?\n' +
-		'Enter "-Raider" if you wish to apply for the rank of our raiders.\n' + 
+		'Enter "-Raider" if you wish to apply for the rank of our raiders.\n' +
 		'Enter "-Crafter" if you wish to apply for the rank of our crafters and gatherers.\n' +
 		'Enter "-Social" if you wish to apply for the rank of our social members.\n' +
 		'Otherwise, enter "-Guest" if you wish to simply visit our server.');
@@ -169,7 +169,7 @@ client.on('message', message => {
     			return;
     		}
     		doc.addRow(1, {
-				Name: parsedString[1].trim(), 
+				Name: parsedString[1].trim(),
 				'Available Jobs': parsedString[2].trim(),
 				'Preferred Job': parsedString[3] ? parsedString[3].trim() : 'No preference'
 			}, function (err) {
@@ -223,7 +223,7 @@ client.on('message', message => {
     			return;
     		}
     		doc.addRow(2, {
-				Name: parsedString[1].trim(), 
+				Name: parsedString[1].trim(),
 				'Raid Hours': parsedString[2].trim(),
 				Food: parsedString[3].trim(),
 				'Food Amount': 2 * parseInt(parsedString[2].trim()),
@@ -237,18 +237,53 @@ client.on('message', message => {
 			message.channel.send("Your request has been added for the week.");
     	}
 	}
+	if (message.channel.name === 'entrance-hall') {
+		if (message.content.toLowerCase() === '-clear') {
+					if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
+						message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
+						return;
+					}
+					if (message.channel.type === 'text') {
+						message.channel.fetchMessages()
+									.then(messages => {
+											messagesToDelete = messages.filter(function (message) {
+													if (!message.pinned) {
+															return true;
+													}
+													return false;
+											});
+										message.channel.bulkDelete(messagesToDelete);
+										message.channel.send("Messages for #entrance-hall have been cleared.");
+									}).catch(err => {
+										console.log(err);
+									});
+					}
+		}
+}
 
+    if (message.content.toLowerCase() === '-bacon') {
+      requested = true;
+      message.channel.send("Crispy bacon is the only right way.")
+    }
 	// lol
-	// if (message.content.toLowerCase() === '-requesterp') {
-	// 	requested = true;
-	// 	message.channel.send("Here are the list of cat sluts at your disposal: ");
-	// 	message.channel.send("Rai Nagisei: 1 gil");
-	// 	message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
-	// }
-	// if (message.content.toLowerCase() === '-rainagisei' && requested) {
-	// 	requested = false;
-	// 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
-	// }
+	  if (message.content.toLowerCase() === '-requesterp') {
+  	 requested = true;
+  	 message.channel.send("Here is the list of sluts at your disposal: ");
+  	 message.channel.send("Rai Nagisei: 1 gil");
+		 message.channel.send("Tiamata Pendragon (Little Tia): Free")
+     message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
+	 }
+	 if (message.content.toLowerCase() === '-rainagisei' && requested) {
+	 	requested = false;
+	 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
+	 }
+	 if (message.content.toLowerCase() === '-tiamatapendragon' && requested) {
+		 requested = false;
+		 message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
+	 }
+	// if (message.content.indexOf('futa') > -1) {
+		// message.channel.send("Futa is a bad fetish.")
+	 // }
 });
 
 client.login(bot_token.bot_token);
