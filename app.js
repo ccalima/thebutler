@@ -239,51 +239,45 @@ client.on('message', message => {
 	}
 	if (message.channel.name === 'entrance-hall') {
 		if (message.content.toLowerCase() === '-clear') {
-					if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
-						message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
-						return;
-					}
-					if (message.channel.type === 'text') {
-						message.channel.fetchMessages()
-									.then(messages => {
-											messagesToDelete = messages.filter(function (message) {
-													if (!message.pinned) {
-															return true;
-													}
-													return false;
-											});
-										message.channel.bulkDelete(messagesToDelete);
-										message.channel.send("Messages for #entrance-hall have been cleared.");
-									}).catch(err => {
-										console.log(err);
-									});
-					}
+			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
+				message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
+				return;
+			}
+			if (message.channel.type === 'text') {
+				message.channel.fetchMessages()
+					.then(messages => {
+						messagesToDelete = messages.filter(function (message) {
+							if (!message.pinned) {
+								return true;
+							}
+							return false;
+						});
+						message.channel.bulkDelete(messagesToDelete);
+						message.channel.send("Messages for #entrance-hall have been cleared.");
+					}).catch(err => {
+						console.log(err);
+					});
+			}
 		}
-}
-
+	}
     if (message.content.toLowerCase() === '-bacon') {
-      requested = true;
-      message.channel.send("Crispy bacon is the only right way.")
+      	message.channel.send("Juicy bacon is the only right way.")
     }
-	// lol
-	  if (message.content.toLowerCase() === '-requesterp') {
-  	 requested = true;
-  	 message.channel.send("Here is the list of sluts at your disposal: ");
-  	 message.channel.send("Rai Nagisei: 1 gil");
-		 message.channel.send("Tiamata Pendragon (Little Tia): Free")
-     message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
-	 }
-	 if (message.content.toLowerCase() === '-rainagisei' && requested) {
+	if (message.content.toLowerCase() === '-requesterp') {
+  	 	requested = true;
+  	 	message.channel.send("Here is the list of sluts at your disposal: ");
+  	 	message.channel.send("Rai Nagisei: 1 gil");
+		message.channel.send("Tiamata Pendragon (Little Tia): Free")
+     	message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
+	}
+	if (message.content.toLowerCase() === '-rainagisei' && requested) {
 	 	requested = false;
 	 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
-	 }
-	 if (message.content.toLowerCase() === '-tiamatapendragon' && requested) {
-		 requested = false;
-		 message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
-	 }
-	// if (message.content.indexOf('futa') > -1) {
-		// message.channel.send("Futa is a bad fetish.")
-	 // }
+	}
+	if (message.content.toLowerCase() === '-tiamatapendragon' && requested) {
+		requested = false;
+		message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
+	}
 });
 
 client.login(bot_token.bot_token);
