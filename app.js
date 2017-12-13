@@ -12,6 +12,7 @@ var doc = new GoogleSpreadsheet('1E1o3uWXYlDfo79pHzHkFHqGGPZjZikfCw53ITLHnNTs');
 var guild, roles, channels, members,
 	officer, staticleader, raider, crafter, social, guest,
 	entrancehall,
+	applications,
 	applicants = {},
 	messagesToDelete,
 	requested;
@@ -42,6 +43,7 @@ client.on('ready', () => {
 	// channels
 	channels = guild.channels;
 	entrancehall = channels.find('name', 'entrance-hall');
+	applications = channels.find('name', 'Applications');
 
 	// members
 	members = guild.members;
@@ -63,7 +65,7 @@ client.on('message', message => {
 		if (['-raider', '-crafter', '-social'].indexOf(message.content.toLowerCase()) > -1) {
 			if (typeof applicants[message.author.username] !== 'string') {
 				applicants[message.author.username] = 'false';
-				message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase().toLowerCase(), 'text')
+				message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase().toLowerCase(), 'text', {parent: applications})
 					.then(function (channel) {
 						channel.overwritePermissions(message.author, {
 							READ_MESSAGES: true,
@@ -87,7 +89,7 @@ client.on('message', message => {
 						}
 						message.channel.send("Very good. I have sent the application instructions directly to you. Please check your DMs.");
 					});
-				message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase() + '-discussion', 'text')
+				message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase() + '-discussion', 'text', {parent: applications})
 					.then(function (channel) {
 						channel.overwritePermissions(message.author, {
 							READ_MESSAGES: false,
