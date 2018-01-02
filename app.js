@@ -1,7 +1,7 @@
 // client information
 const Discord = require('discord.js');
 const client = new Discord.Client();
- 
+
 // google doc information
 var GoogleSpreadsheet = require('google-spreadsheet');
 var creds = require('./client_secret.json');
@@ -49,7 +49,7 @@ client.on('ready', () => {
 
 client.on('guildMemberAdd', member => {
 	entrancehall.send('Good day, ' + member.user.username + '. How may I help you?\n' +
-		'Enter "-Raider" if you wish to apply for the rank of our raiders.\n' + 
+		'Enter "-Raider" if you wish to apply for the rank of our raiders.\n' +
 		'Enter "-Crafter" if you wish to apply for the rank of our crafters and gatherers.\n' +
 		'Enter "-Social" if you wish to apply for the rank of our social members.\n' +
 		'Otherwise, enter "-Guest" if you wish to simply visit our server.');
@@ -73,17 +73,21 @@ client.on('message', message => {
 							READ_MESSAGES: false,
 							SEND_MESSAGES: false
 						});
+						channel.overwritePermissions(officer, {
+							READ_MESSAGES: true,
+							SEND_MESSAGES: true
+						});
 						message.author.send("Here are the questions you are expected to answer. Please answer them thoroughly and to the best of your knowledge, as this is Enrage's first impression of you. \nOnce you have completed all the questions, **please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
 						message.author.send("You must complete this process within 24 hours. Failure to do so will result in the immediate rejection of your application. \nAlso note that your application will be scrutinized by both the officers and the members.");
 						message.author.send("With that, here are the questions: \n1). What is your character's name? \n2). What made you choose Enrage? What are your expectations of us?");
 						if (message.content === '-Raider') {
-							message.author.send("3). What class(es) do you raid on? \n4). Please link your Lodestone with your Achievements set to be viewed publically. \n5). Please link your fflogs. \n6). Do you have any goals as a raider? If so, describe what you hope to accomplish.");
+							message.author.send("3). What class(es) do you raid on? \n4). Please link your Lodestone with your Achievements set to be viewed publically. \n5). Please link your fflogs. \n6). Do you have any goals as a raider? If so, describe what you hope to accomplish. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
 						}
 						if (message.content === '-Crafter') {
-							message.author.send("3). Please link your Lodestone. \n4). Please link your gear/stats for your gatherer/crafter. \n5). List all mastery/folklore books you have obtained.");
+							message.author.send("3). Please link your Lodestone. \n4). Please link your gear/stats for your gatherer/crafter. \n5). List all mastery/folklore books you have obtained. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
 						}
 						if (message.content === '-Social') {
-							message.author.send("3). Name the Enrage Raider who referred you to this free company. One is required.");
+							message.author.send("3). Name the Enrage Raider who referred you to this free company. One is required. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.** ");
 						}
 						message.channel.send("Very good. I have sent the application instructions directly to you. Please check your DMs.");
 					});
@@ -98,6 +102,10 @@ client.on('message', message => {
 							SEND_MESSAGES: false
 						});
 						channel.overwritePermissions(enragemember, {
+							READ_MESSAGES: false,
+							SEND_MESSAGES: false
+						});
+						channel.overwritePermissions(officer, {
 							READ_MESSAGES: true,
 							SEND_MESSAGES: true
 						});
@@ -169,7 +177,7 @@ client.on('message', message => {
     			return;
     		}
     		doc.addRow(1, {
-				Name: parsedString[1].trim(), 
+				Name: parsedString[1].trim(),
 				'Available Jobs': parsedString[2].trim(),
 				'Preferred Job': parsedString[3] ? parsedString[3].trim() : 'No preference'
 			}, function (err) {
@@ -223,7 +231,7 @@ client.on('message', message => {
     			return;
     		}
     		doc.addRow(2, {
-				Name: parsedString[1].trim(), 
+				Name: parsedString[1].trim(),
 				'Raid Hours': parsedString[2].trim(),
 				Food: parsedString[3].trim(),
 				'Food Amount': 2 * parseInt(parsedString[2].trim()),
@@ -237,18 +245,84 @@ client.on('message', message => {
 			message.channel.send("Your request has been added for the week.");
     	}
 	}
+	if (message.channel.name === 'entrance-hall') {
+		if (message.content.toLowerCase() === '-clear') {
+					if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
+						message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
+						return;
+					}
+					if (message.channel.type === 'text') {
+						message.channel.fetchMessages()
+						 .then(messages => {
+							 messagesToDelete = messages.filter(function (message) {
+								if (!message.pinned) {
+									return true;
+									 }
+								return false;
+											});
+										message.channel.bulkDelete(messagesToDelete);
+										message.channel.send("Messages for #entrance-hall have been cleared.");
+									}).catch(err => {
+										console.log(err);
+									});
+					}
+		}
+}
 
+    if (message.content.toLowerCase() === '-bacon') {
+      requested = true;
+      message.channel.send("Crispy bacon is the only right way.")
+    }
 	// lol
-	// if (message.content.toLowerCase() === '-requesterp') {
-	// 	requested = true;
-	// 	message.channel.send("Here are the list of cat sluts at your disposal: ");
-	// 	message.channel.send("Rai Nagisei: 1 gil");
-	// 	message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
-	// }
-	// if (message.content.toLowerCase() === '-rainagisei' && requested) {
-	// 	requested = false;
-	// 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
-	// }
+	  if (message.content.toLowerCase() === '-requesterp') {
+  	 requested = true;
+  	 message.channel.send("Here is the list of sluts at your disposal: ");
+  	 message.channel.send("Rai Nagisei: 1 gil");
+		 message.channel.send("Tiamata Pendragon (Little Tia): Free")
+     message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
+	 }
+	 if (message.content.toLowerCase() === '-rainagisei' && requested) {
+	 	requested = false;
+	 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
+	 }
+	 if (message.content.toLowerCase() === '-tiamatapendragon' && requested) {
+		 requested = false;
+		 message.channel.send("Very well. Please send a DM to <@107222810081894400> at your earliest convenience.");
+	 }
+	 if (message.content.indexOf('iwi') > -1) {
+		 message.channel.send("uwu")
+	 }
+	 if (message.content.indexOf('IwI') > -1) {
+		 message.channel.send("UwU")
+	}
+	if (message.content.indexOf('Iwi') > -1) {
+		message.channel.send("Uwu")
+	}
+	if (message.content.indexOf('iwI') > -1) {
+		message.channel.send("uwU")
+	}
+	if (message.content.indexOf('IWI') > -1) {
+		message.channel.send("UWU")
+	}
+	if (message.content.indexOf('iWI') > -1) {
+		message.channel.send("uWU")
+	}
+	if (message.content.indexOf('IWi') > -1) {
+		message.channel.send("UWu")
+	}
+	if (message.content.indexOf('iWi') > -1) {
+		message.channel.send("uWu")
+	}
+	if (message.content.toLowerCase() === 'owo') {
+		message.channel.send("What's this?")
+	}
+// if (message.content.indexOf('futa') > -1) {
+ // message.channel.send("To answer why it bother me so much, it's the mlp of fetishes. Like ponifying everything and anything every female character has to have a dick drawn on it because the people who like it can't fap otherwise or feel insecure, seeing another man on screen. A man with a vagina isn't as popular of a 'fetish' because it only amplifies their insecurities because it has masculine traits. It's not considered gay by the people who like it because they don't care for the dick as much as they care that it's just not a man in general but two women on screen.")
+//  message.channel.send("The very fact this is enjoyed by mostly NEET dudes living at home with no job or girlfriend alone says plenty about how insecure one must be in order to enjoy this stuff. It's not traumatizing to see it, it's frustrating. No self respecting woman wants to see guys circlejerk about epic drawings of male genetalia on a female body. This and Loli are genuinely abrasive and in your face fetishes of the 4chan community when it should not be anything more than a private niche fetish. The whole argument that dickgirls don't fall into a /d/ channel because it's a niche fetish is entirely just thinly veiled friend politic.")
+// message.channel.send("You don't want to upset what you think is a majority and I can get behind that. Don't tell me you believe these people completely justified in their actions if they threatened to leave unless you change things and constantly parade around like I'm the whiny one. The mindset people have that make them like this garbage is the very reason I think futa is the worst thing I've ever seen. The fact you tell me to ''deal with it'' is the most ironic part of this whole drama, given that you tried a democratic approach and the losing party, clearly the minority resorted to tantrums and threats towards you almost instantly.")
+// message.channel.send("They couldn't deal with it. But I will. Hope that answers why Futa and people who like Futa belong in /d/ and don't get to post in /h/ in anywhere but here and why I think it's not even a fetish.")
+// }
+
 });
 
 client.login(bot_token.bot_token);
