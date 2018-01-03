@@ -136,101 +136,101 @@ client.on('message', message => {
 	}
 	if (message.channel.name === 'recruitment') {
 		if (message.content.toLowerCase() === '-clear') {
-      		if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
-        		message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
-        		return;
-      		}
-      		if (message.channel.type === 'text') {
-        		message.channel.fetchMessages()
-          			.then(messages => {
-          				messagesToDelete = messages.filter(function (message) {
-          					if (!message.pinned) {
-          						return true;
-          					}
-          					return false;
-          				});
-            			message.channel.bulkDelete(messagesToDelete);
-            			message.channel.send("Messages for #recruitment have been cleared for the week.");
-          			}).catch(err => {
-            			console.log(err);
-          			});
-      		}
-    	}
-    	if (message.content.toLowerCase().indexOf('-alliance') > -1) {
-    		if (message.content.toLowerCase().indexOf('clear') > -1) {
-    			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
-        			message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
-      			} else {
-    				doc.getRows(1, {offset: 1}, function (err, rows) {
-    					rows.forEach(function (row) {
-    						row.del(function () {});
-    					});
-    				});
-    				message.channel.send("Roster for the alliance raid has been cleared for the week.");
-    			}
-    			return;
-    		}
-    		var parsedString = message.content.split(';');
-    		if (!parsedString[1] || !parsedString[2]) {
-    			message.channel.send("There was an error processing your request. The proper formatting is");
-    			message.channel.send("```-alliance ; (name) ; (available jobs) ; (preferred jobs [optional])```");
-    			return;
-    		}
-    		doc.addRow(1, {
+			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
+				message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
+				return;
+			}
+			if (message.channel.type === 'text') {
+				message.channel.fetchMessages()
+					.then(messages => {
+						messagesToDelete = messages.filter(function (message) {
+							if (!message.pinned) {
+								return true;
+							}
+							return false;
+						});
+						message.channel.bulkDelete(messagesToDelete);
+						message.channel.send("Messages for #recruitment have been cleared for the week.");
+					}).catch(err => {
+						console.log(err);
+					});
+			}
+		}
+		if (message.content.toLowerCase().indexOf('-alliance') > -1) {
+			if (message.content.toLowerCase().indexOf('clear') > -1) {
+				if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
+					message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
+				} else {
+					doc.getRows(1, {offset: 1}, function (err, rows) {
+						rows.forEach(function (row) {
+							row.del(function () {});
+						});
+					});
+					message.channel.send("Roster for the alliance raid has been cleared for the week.");
+				}
+				return;
+			}
+			var parsedString = message.content.split(';');
+			if (!parsedString[1] || !parsedString[2]) {
+				message.channel.send("There was an error processing your request. The proper formatting is");
+				message.channel.send("```-alliance ; (name) ; (available jobs) ; (preferred jobs [optional])```");
+				return;
+			}
+			doc.addRow(1, {
 				Name: parsedString[1].trim(),
 				'Available Jobs': parsedString[2].trim(),
 				'Preferred Job': parsedString[3] ? parsedString[3].trim() : 'No preference'
 			}, function (err) {
-  				if (err) {
-    				console.log(err);
-  				}
+				if (err) {
+					console.log(err);
+				}
 			});
 			message.channel.send("You have been added to the alliance raid for the week.");
-    	}
-    }
-    if (message.channel.name === 'crafts-and-supplies') {
-    	if (message.content.toLowerCase() === '-clear') {
-      		if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
-        		message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
-        		return;
-      		}
-      		if (message.channel.type === 'text') {
-        		message.channel.fetchMessages()
-          			.then(messages => {
-          				messagesToDelete = messages.filter(function (message) {
-          					if (!message.pinned) {
-          						return true;
-          					}
-          					return false;
-          				});
-            			message.channel.bulkDelete(messagesToDelete);
-            			message.channel.send("Messages for #crafts have been cleared for the week.");
-          			}).catch(err => {
-            			console.log(err);
-          			});
-      		}
-    	}
-    	if (message.content.toLowerCase().indexOf('-supplies') > -1) {
-    		if (message.content.toLowerCase().indexOf('clear') > -1) {
-    			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
-        			message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
-      			} else {
-    				doc.getRows(2, {offset: 1}, function (err, rows) {
-    					rows.forEach(function (row) {
-    						row.del(function () {});
-    					});
-    				});
-    				message.channel.send("Requests for supplies have been cleared for the week.");
-    			}
-    			return;
-    		}
-    		var parsedString = message.content.split(';');
-    		if (!parsedString[1] || !parsedString[2] || !parsedString[3]) {
-    			message.channel.send("There was an error processing your request. The proper formatting is");
-    			message.channel.send("```-supplies ; (name) ; (total number of raid hours for the week) ; (food) ; (type of potion [optional])```");
-    			return;
-    		}
-    		doc.addRow(2, {
+		}
+	}
+	if (message.channel.name === 'crafts-and-supplies') {
+		if (message.content.toLowerCase() === '-clear') {
+			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
+				message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
+				return;
+			}
+			if (message.channel.type === 'text') {
+				message.channel.fetchMessages()
+					.then(messages => {
+						messagesToDelete = messages.filter(function (message) {
+							if (!message.pinned) {
+								return true;
+							}
+							return false;
+						});
+						message.channel.bulkDelete(messagesToDelete);
+						message.channel.send("Messages for #crafts have been cleared for the week.");
+					}).catch(err => {
+						console.log(err);
+					});
+			}
+		}
+		if (message.content.toLowerCase().indexOf('-supplies') > -1) {
+			if (message.content.toLowerCase().indexOf('clear') > -1) {
+				if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
+					message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
+				} else {
+					doc.getRows(2, {offset: 1}, function (err, rows) {
+						rows.forEach(function (row) {
+							row.del(function () {});
+						});
+					});
+					message.channel.send("Requests for supplies have been cleared for the week.");
+				}
+				return;
+			}
+			var parsedString = message.content.split(';');
+			if (!parsedString[1] || !parsedString[2] || !parsedString[3]) {
+				message.channel.send("There was an error processing your request. The proper formatting is");
+				message.channel.send("```-supplies ; (name) ; (total number of raid hours for the week) ; (food) ; (type of potion [optional])```");
+				return;
+			}
+			doc.addRow(2, {
 				Name: parsedString[1].trim(),
 				'Raid Hours': parsedString[2].trim(),
 				Food: parsedString[3].trim(),
@@ -238,12 +238,12 @@ client.on('message', message => {
 				Potion: parsedString[4] ? parsedString[4].trim() : 'None',
 				'Potion Amount': parsedString[4] ? 5 * parseInt(parsedString[2].trim()) : 0
 			}, function (err) {
-  				if (err) {
-    				console.log(err);
-  				}
+				if (err) {
+					console.log(err);
+				}
 			});
 			message.channel.send("Your request has been added for the week.");
-    	}
+		}
 	}
 	if (message.channel.name === 'entrance-hall') {
 		if (message.content.toLowerCase() === '-clear') {
@@ -269,21 +269,21 @@ client.on('message', message => {
 		}
 }
 
-    if (message.content.toLowerCase() === '-bacon') {
-      requested = true;
-      message.channel.send("Crispy bacon is the only right way.")
-    }
+	if (message.content.toLowerCase() === '-bacon') {
+	  requested = true;
+	  message.channel.send("Crispy bacon is the only right way.")
+	}
 	// lol
 	  if (message.content.toLowerCase() === '-requesterp') {
-  	 requested = true;
-  	 message.channel.send("Here is the list of sluts at your disposal: ");
-  	 message.channel.send("Rai Nagisei: 1 gil");
+	 requested = true;
+	 message.channel.send("Here is the list of sluts at your disposal: ");
+	 message.channel.send("Rai Nagisei: 1 gil");
 		 message.channel.send("Tiamata Pendragon (Little Tia): Free")
-     message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
+	 message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
 	 }
 	 if (message.content.toLowerCase() === '-rainagisei' && requested) {
-	 	requested = false;
-	 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
+		requested = false;
+		message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
 	 }
 	 if (message.content.toLowerCase() === '-tiamatapendragon' && requested) {
 		 requested = false;
