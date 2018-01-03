@@ -316,6 +316,9 @@ client.on('message', message => {
 	if (message.content.toLowerCase() === 'owo') {
 		message.channel.send("What's this?")
 	}
+//	if (message.author.id === "67422088641654784") {
+//		message.delete()
+//	}
 // if (message.content.indexOf('futa') > -1) {
  // message.channel.send("To answer why it bother me so much, it's the mlp of fetishes. Like ponifying everything and anything every female character has to have a dick drawn on it because the people who like it can't fap otherwise or feel insecure, seeing another man on screen. A man with a vagina isn't as popular of a 'fetish' because it only amplifies their insecurities because it has masculine traits. It's not considered gay by the people who like it because they don't care for the dick as much as they care that it's just not a man in general but two women on screen.")
 //  message.channel.send("The very fact this is enjoyed by mostly NEET dudes living at home with no job or girlfriend alone says plenty about how insecure one must be in order to enjoy this stuff. It's not traumatizing to see it, it's frustrating. No self respecting woman wants to see guys circlejerk about epic drawings of male genetalia on a female body. This and Loli are genuinely abrasive and in your face fetishes of the 4chan community when it should not be anything more than a private niche fetish. The whole argument that dickgirls don't fall into a /d/ channel because it's a niche fetish is entirely just thinly veiled friend politic.")
