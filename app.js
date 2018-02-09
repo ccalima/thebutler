@@ -48,11 +48,14 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', member => {
-	entrancehall.send('Good day, ' + member.user.username + '. How may I help you?\n' +
-		'Enter "-Raider" if you wish to apply for the rank of our raiders.\n' +
-		'Enter "-Crafter" if you wish to apply for the rank of our crafters and gatherers.\n' +
-		'Enter "-Social" if you wish to apply for the rank of our social members.\n' +
-		'Otherwise, enter "-Guest" if you wish to simply visit our server.');
+	entrancehall.send('Greetings, ' + member.user.username + '. How may I help you today?\n\n' +
+		'**If you’d like to only join the Discord server and not the free company**, please enter ' +
+		'“-Guest” (without quotation marks). This will let you have access to more text/voice channels.\n\n' +
+		'**If you’d like to join the free company**, please enter 1 of the 2 listed commands below ' +
+		'(without quotation marks), and I will help you get started on your application by sending ' +
+		'you a DM specifying the criteria. Please read it carefully.\n\n' +
+		'Enter “-Raider” if you’d like to join as a raider.\n' +
+		'Enter “-Social” if you’d like to join as a social member.');
 });
 
 client.on('message', message => {
@@ -60,7 +63,7 @@ client.on('message', message => {
 		return;
 	}
 	if (message.channel.name === 'entrance-hall') {
-		if (['-raider', '-crafter', '-social'].indexOf(message.content.toLowerCase()) > -1) {
+		if (['-raider', '-social'].indexOf(message.content.toLowerCase()) > -1) {
 			if (typeof applicants[message.author.username] !== 'string') {
 				applicants[message.author.username] = 'false';
 				message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase().toLowerCase(), 'text')
@@ -80,13 +83,10 @@ client.on('message', message => {
 					message.author.send("Here are the questions you are expected to answer. Please answer them thoroughly and to the best of your knowledge, as this is Enrage's first impression of you. \nOnce you have completed all the questions, **please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
 					message.author.send("You must complete this process within 24 hours. Failure to do so will result in the immediate rejection of your application. \nAlso note that your application will be scrutinized by both the officers and the members.");
 					message.author.send("With that, here are the questions: \n1). What is your character's name? \n2). What made you choose Enrage? What are your expectations of us?");
-					if (message.content === '-Raider') {
+					if (message.content.toLowerCase() === '-raider') {
 						message.author.send("3). What class(es) do you raid on? \n4). Please link your Lodestone with your Achievements set to be viewed publically. \n5). Please link your fflogs. \n6). Do you have any goals as a raider? If so, describe what you hope to accomplish. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
 					}
-					if (message.content === '-Crafter') {
-						message.author.send("3). Please link your Lodestone. \n4). Please link your gear/stats for your gatherer/crafter. \n5). List all mastery/folklore books you have obtained. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
-					}
-					if (message.content === '-Social') {
+					if (message.content.toLowerCase() === '-social') {
 						message.author.send("3). Name the Enrage Raider who referred you to this free company. One is required. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.** ");
 					}
 					message.channel.send("Very good. I have sent the application instructions directly to you. Please check your DMs.");
@@ -268,22 +268,6 @@ client.on('message', message => {
 			}
 		}
 	}
-	if (message.content.toLowerCase() === '-requesterp') {
-		requested = true;
-		message.channel.send("Here is the list of sluts at your disposal: \n" +
-			"Rai Nagisei: 1 gil\n" +
-			"Tiamata Pendragon (Little Tia): Free\n" +
-			"Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
-	}
-	if (message.content.toLowerCase() === '-rainagisei' && requested) {
-		requested = false;
-		message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
-	}
-	if (message.content.toLowerCase() === '-tiamatapendragon' && requested) {
-		requested = false;
-		message.channel.send("Very well. Please send a DM to <@107222810081894400> at your earliest convenience.");
-	}
-
 });
 
 client.login(bot_token.bot_token);
