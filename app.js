@@ -10,9 +10,8 @@ var doc = new GoogleSpreadsheet('1E1o3uWXYlDfo79pHzHkFHqGGPZjZikfCw53ITLHnNTs');
 
 // enrage server information
 var guild, roles, channels, members,
-officer, staticleader, raider, crafter, social, guest,
+officer, staticleader, raider, social, guest,
 entrancehall,
-applicants = {},
 messagesToDelete,
 lowerCasedMessage;
 
@@ -33,7 +32,6 @@ client.on('ready', () => {
 	officer = roles.find('name', 'Officer');
 	staticleader = roles.find('name', 'Static Leader');
 	raider = roles.find('name', 'Raider');
-	crafter = roles.find('name', 'FC Crafter');
 	social = roles.find('name', 'Social');
 	enragemember = roles.find('name', 'FC Member');
 	guest = roles.find('name', 'Guest');
@@ -65,9 +63,7 @@ client.on('message', message => {
 	lowerCasedMessage = message.content.toLowerCase();
 	if (message.channel.name === 'entrance-hall') {
 		if (['-raider', '-social'].indexOf(lowerCasedMessage) > -1) {
-			if (typeof applicants[message.author.username] !== 'string') {
-				applicants[message.author.username] = 'false';
-				message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase().toLowerCase(), 'text')
+			message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase().toLowerCase(), 'text')
 				.then(function (channel) {
 					channel.overwritePermissions(message.author, {
 						READ_MESSAGES: true,
@@ -81,39 +77,28 @@ client.on('message', message => {
 						READ_MESSAGES: true,
 						SEND_MESSAGES: true
 					});
-					message.author.send("Here's the application for you to fill out. Please answers these questions to the best of your knowledge. \nOnce you have completed all the questions, **please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
+					message.author.send("Here's the application for you to fill out. Please answers these questions to the best of your knowledge.\n" + 
+						"Once you have completed all the questions, **please copy/paste the questions and answers into the created text channel named " + 
+						"after you in the Enrage Discord.**");
 					message.author.send("Please do so within 24 hours. After it has been submitted, your application will be reviewed by officers.");
-					message.author.send("With that, here are the questions: \n1). What is your character's name? \n2). What made you choose Enrage? What are your expectations of us?");
+					message.author.send("With that, here are the questions:\n" + 
+						"1). What is your character's name?\n" + 
+						"2). Why would you like to join Enrage?\n" +
+						"3). Please tell us a little bit about yourself.");
 					if (lowerCasedMessage.indexOf('-raider') > -1) {
-						message.author.send("3). What class(es) do you raid on? \n4). Please link your Lodestone with your Achievements set to be viewed publicly. \n5). Please link your fflogs. \n6). Do you have any goals as a raider? If so, describe what you hope to achieve. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
+						message.author.send("4). Please describe your previous, and current raiding history.\n" + 
+							"5). Please link us to your FFlogs character page.\n" + 
+							"6). What jobs do you main, and what else are you able to play in raid?\n" + 
+							"7). Have you had any other raiding experience prior to FFXIV?\n" + 
+							"8). What are your goals as a raider in FFXIV, and ambition?\n" + 
+							"9). Do you have any references or people you know within Enrage? If so, who?\n");
 					}
 					if (lowerCasedMessage.indexOf('-social') > -1) {
-						message.author.send("3). Name the Enrage Raider who referred you to this free company. One is required. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.** ");
+						message.author.send("4). Name the Enrage Raider who referred you to this free company. One is required.\n");
 					}
+					message.author.send("**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
 					message.channel.send("Very good. I have sent the application instructions directly to you. Please check your DMs.");
 				});
-				message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase() + '-discussion', 'text')
-				.then(function (channel) {
-					channel.overwritePermissions(message.author, {
-						READ_MESSAGES: false,
-						SEND_MESSAGES: false
-					});
-					channel.overwritePermissions(everyone, {
-						READ_MESSAGES: false,
-						SEND_MESSAGES: false
-					});
-					channel.overwritePermissions(enragemember, {
-						READ_MESSAGES: false,
-						SEND_MESSAGES: false
-					});
-					channel.overwritePermissions(officer, {
-						READ_MESSAGES: true,
-						SEND_MESSAGES: true
-					});
-				});
-			} else {
-				message.channel.send("It seems like you already have an application in place. Please wait for your current application to finish before applying for another role.");
-			}
 		}
 		if (lowerCasedMessage.indexOf('-guest') > -1) {
 			message.member.addRole(guest);
@@ -122,12 +107,9 @@ client.on('message', message => {
 	}
 	if (message.channel.name === message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase()) {
 		if (lowerCasedMessage.indexOf('yes') > -1) {
-			applicants[message.author.username] = 'true';
 			message.channel.send(officer.toString() + "s, " + message.author.username + " has submitted an application. Please review it.");
 		} else {
-			if (applicants[message.author.username] === 'false') {
-				message.channel.send('Have you finished your application? If so, enter "Yes" and the members will review your application. Otherwise, edit your response as necessary before submitting.');
-			}
+			message.channel.send('Have you finished your application? If so, enter "Yes" and the officers will review your application. Otherwise, edit your response as necessary before submitting.');
 		}
 	}
 	if (message.channel.name === 'recruitment') {
