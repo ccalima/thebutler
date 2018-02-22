@@ -109,14 +109,12 @@ client.on('message', message => {
 			message.channel.send('Very good. We hope your stay is most comfortable.');
 		}
 	}
-	if (message.channel.name === applicantName) {
-		if (lowerCasedMessage ==='yes') {
+	if (message.channel.name === applicantName && aplicants[applicantName]) {
+		if (lowerCasedMessage === 'yes') {
 			applicants[applicantName] = false;
 			message.channel.send(officer.toString() + "s, " + message.author.username + " has submitted an application. Please review it.");
 		} else {
-			if (aplicants[applicantName]) {
-				message.channel.send('Have you finished your application? If so, enter "Yes" and the officers will review your application. Otherwise, edit your response as necessary before submitting.');
-			}
+			message.channel.send('Have you finished your application? If so, enter "Yes" (without quotes) and the officers will review your application. Otherwise, edit your response as necessary before submitting.');
 		}
 	}
 	if (message.channel.name === 'recruitment') {
