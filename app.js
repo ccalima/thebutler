@@ -226,7 +226,7 @@ client.on('message', message => {
     			return;
     		}
     		var parsedString = message.content.split(';');
-    		if (!parsedString[1] || !parsedString[2] || !parsedString[3] || isNaN(parsedString[2].trim()) ) {
+    		if (!parsedString[1] || !parsedString[2] || !parsedString[3] || isNaN(parseInt(parsedString[2].trim())) ) {
     			message.channel.send("There was an error processing your request. The proper formatting is");
     			message.channel.send("```-supplies ; (name) ; (total number of raid hours for the week) ; (food) ; (type of potion [optional])```");
     			return;
