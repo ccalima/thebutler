@@ -50,11 +50,14 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', member => {
-	entrancehall.send('Good day, ' + member.user.username + '. How may I help you?\n' +
+	entrancehall.send('Good day, ' + member.user.username + '. Welcome to the Enrage discord. How may I help you?\n' +
+		'**Applying for the Free Company**\n\n' + // for clarity
 		'Enter "-Raider" if you wish to apply for the rank of our raiders.\n' +
-		'Enter "-Crafter" if you wish to apply for the rank of our crafters and gatherers.\n' +
+//		outdated, no longer accepting crafter applications
+//		'Enter "-Crafter" if you wish to apply for the rank of our crafters and gatherers.\n' +  
 		'Enter "-Social" if you wish to apply for the rank of our social members.\n' +
-		'Otherwise, enter "-Guest" if you wish to simply visit our server.');
+		'**Visiting the Discord**\n\n' + // for clarity
+		'Enter "-Guest" if you wish to simply visit our server.');
 });
 
 client.on('message', message => {
@@ -75,16 +78,17 @@ client.on('message', message => {
 							READ_MESSAGES: false,
 							SEND_MESSAGES: false
 						});
-						message.author.send("Here are the questions you are expected to answer. Please answer them thoroughly and to the best of your knowledge, as this is Enrage's first impression of you. \nOnce you have completed all the questions, **please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
-						message.author.send("You must complete this process within 24 hours. Failure to do so will result in the immediate rejection of your application. \nAlso note that your application will be scrutinized by both the officers and the members.");
+						message.author.send("Here are the questions for you to answer. Please answer them to the best of your knowledge. \nOnce you have completed all the questions, **please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
+						message.author.send("Please complete this process within 24 hours. \nPlease note officers will be able to read your application once it is submitted. During your trial period, members will be able to give feedback about your stay.");
 						message.author.send("With that, here are the questions: \n1). What is your character's name? \n2). What made you choose Enrage? What are your expectations of us?");
-						if (message.content === '-Raider') {
+						if (message.content.toLowerCase().indexOf('-raider') > -1) {
 							message.author.send("3). What class(es) do you raid on? \n4). Please link your Lodestone with your Achievements set to be viewed publically. \n5). Please link your fflogs. \n6). Do you have any goals as a raider? If so, describe what you hope to accomplish.");
 						}
-						if (message.content === '-Crafter') {
-							message.author.send("3). Please link your Lodestone. \n4). Please link your gear/stats for your gatherer/crafter. \n5). List all mastery/folklore books you have obtained.");
-						}
-						if (message.content === '-Social') {
+//						outdated, crafter apps are no longer a thing
+//						if (message.content === '-Crafter') {
+//							message.author.send("3). Please link your Lodestone. \n4). Please link your gear/stats for your gatherer/crafter. \n5). List all mastery/folklore books you have obtained.");
+//						}
+						if (message.content.toLowerCase().indexOf('-social') > -1) {
 							message.author.send("3). Name the Enrage Raider who referred you to this free company. One is required.");
 						}
 						message.channel.send("Very good. I have sent the application instructions directly to you. Please check your DMs.");
@@ -99,37 +103,40 @@ client.on('message', message => {
 							READ_MESSAGES: false,
 							SEND_MESSAGES: false
 						});
-						channel.overwritePermissions(enragemember, {
-							READ_MESSAGES: true,
-							SEND_MESSAGES: true
-						});
+//						outdated, members no longer get access to the discussion channel until after the trial has begun
+//						channel.overwritePermissions(enragemember, { 
+//							READ_MESSAGES: true,
+//							SEND_MESSAGES: true
+//						});
 					});
 			} else {
 				message.channel.send("It seems like you already have an application in place. Please wait for your current application to finish before applying for another role.");
 			}
 		}
-		if (message.content.toLowerCase() === '-guest') {
+		if (message.content.toLowerCase().indexOf('-guest') > -1) {
 			message.member.addRole(guest);
 			message.channel.send('Very good. We hope your stay is most comfortable.');
 		}
 	}
 	if (message.channel.name === message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase()) {
-		if (message.content.toLowerCase() === 'yes') {
+		if (message.content.toLowerCase().indexOf('yes') > -1) {
 			applicants[message.author.username] = 'true';
-			message.channel.overwritePermissions(enragemember, {
-				READ_MESSAGES: true,
-				SEND_MESSAGES: false
-			}).then(function () {
-				message.channel.send(enragemember.toString() + "(s), " + message.author.username + " has submitted an application for your discretion. Please review his answers and credentials.");
-			});
+//			outdated, members are no longer able to read apps
+//			message.channel.overwritePermissions(enragemember, {
+//				READ_MESSAGES: true,
+//				SEND_MESSAGES: false
+//			}).then(function () {
+//				message.channel.send(enragemember.toString() + "(s), " + message.author.username + " has submitted an application for your discretion. Please review his answers and credentials.");
+//			});
+			message.channel.send(officer.toString() + "s, " + message.author.username + " has submitted an application. Please review their answers.");
 		} else {
 			if (applicants[message.author.username] === 'false') {
-				message.channel.send('Have you finished your application? If so, enter "Yes" and the members will review your application. Otherwise, edit your response as necessary before submitting.');
+				message.channel.send('Have you finished your application? If so, enter "Yes" and the officers will review your application. Otherwise, edit your response as necessary before submitting.');
 			}
 		}
 	}
 	if (message.channel.name === 'recruitment') {
-		if (message.content.toLowerCase() === '-clear') {
+		if (message.content.toLowerCase().indexOf('-clear') > -1) {
       		if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
         		message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
         		return;
@@ -151,7 +158,7 @@ client.on('message', message => {
       		}
     	}
     	if (message.content.toLowerCase().indexOf('-alliance') > -1) {
-    		if (message.content.toLowerCase().indexOf('clear') > -1) {
+    		if (message.content.toLowerCase().indexOf('-clear') > -1) {
     			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
         			message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
       			} else {
@@ -183,7 +190,7 @@ client.on('message', message => {
     	}
     }
     if (message.channel.name === 'crafts-and-supplies') {
-    	if (message.content.toLowerCase() === '-clear') {
+    	if (message.content.toLowerCase().indexOf('-clear') > -1) {
       		if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
         		message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
         		return;
@@ -205,7 +212,7 @@ client.on('message', message => {
       		}
     	}
     	if (message.content.toLowerCase().indexOf('-supplies') > -1) {
-    		if (message.content.toLowerCase().indexOf('clear') > -1) {
+    		if (message.content.toLowerCase().indexOf('-clear') > -1) {
     			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
         			message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
       			} else {
@@ -219,7 +226,7 @@ client.on('message', message => {
     			return;
     		}
     		var parsedString = message.content.split(';');
-    		if (!parsedString[1] || !parsedString[2] || !parsedString[3]) {
+    		if (!parsedString[1] || !parsedString[2] || !parsedString[3] || isNaN(parsedString[2].trim()) ) {
     			message.channel.send("There was an error processing your request. The proper formatting is");
     			message.channel.send("```-supplies ; (name) ; (total number of raid hours for the week) ; (food) ; (type of potion [optional])```");
     			return;
@@ -228,7 +235,7 @@ client.on('message', message => {
 				Name: parsedString[1].trim(),
 				'Raid Hours': parsedString[2].trim(),
 				Food: parsedString[3].trim(),
-				'Food Amount': 2 * parseInt(parsedString[2].trim()),
+				'Food Amount': 1.5 * parseInt(parsedString[2].trim()), // :monkagun:
 				Potion: parsedString[4] ? parsedString[4].trim() : 'None',
 				'Potion Amount': parsedString[4] ? 5 * parseInt(parsedString[2].trim()) : 0
 			}, function (err) {
@@ -262,24 +269,24 @@ client.on('message', message => {
 			}
 		}
 	}
-    if (message.content.toLowerCase() === '-bacon') {
-      	message.channel.send("Juicy bacon is the only right way.")
-    }
-	if (message.content.toLowerCase() === '-requesterp') {
-  	 	requested = true;
-  	 	message.channel.send("Here is the list of sluts at your disposal: ");
-  	 	message.channel.send("Rai Nagisei: 1 gil");
-		message.channel.send("Tiamata Pendragon (Little Tia): Free")
-     	message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
-	}
-	if (message.content.toLowerCase() === '-rainagisei' && requested) {
-	 	requested = false;
-	 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
-	}
-	if (message.content.toLowerCase() === '-tiamatapendragon' && requested) {
-		requested = false;
-		message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
-	}
+//    if (message.content.toLowerCase() === '-bacon') {
+//      	message.channel.send("Juicy bacon is the only right way.");
+//    }
+//	if (message.content.toLowerCase() === '-requesterp') {
+//  	 	requested = true;
+//  	 	message.channel.send("Here is the list of sluts at your disposal: ");
+//  	 	message.channel.send("Rai Nagisei: 1 gil");
+//		message.channel.send("Tiamata Pendragon (Little Tia): Free")
+//     	message.channel.send("Please indicate which cat slut you would like services from by typing -(name). No space in-between.");
+//	}
+//	if (message.content.toLowerCase() === '-rainagisei' && requested) {
+//	 	requested = false;
+//	 	message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
+//	}
+//	if (message.content.toLowerCase() === '-tiamatapendragon' && requested) {
+//		requested = false;
+//		message.channel.send("Very well. Please send a DM to her at your earliest convenience.");
+//	}
 });
 
 client.login(bot_token.bot_token);
