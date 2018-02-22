@@ -48,7 +48,7 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', member => {
-	entrancehall.send('Greetings, ' + member.user.username + '. How may I help you today?\n\n' +
+	entrancehall.send('Greetings, ' + member.user.username + '. Welcome to the Enrage Discord. How may I help you today?\n\n' +
 		'**If you’d like to only join the Discord server and not the free company**, please enter ' +
 		'“-Guest” (without quotation marks). This will let you have access to more text/voice channels.\n\n' +
 		'**If you’d like to join the free company**, please enter 1 of the 2 listed commands below ' +
@@ -81,14 +81,14 @@ client.on('message', message => {
 						READ_MESSAGES: true,
 						SEND_MESSAGES: true
 					});
-					message.author.send("Here are the questions you are expected to answer. Please answer them thoroughly and to the best of your knowledge, as this is Enrage's first impression of you. \nOnce you have completed all the questions, **please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
-					message.author.send("You must complete this process within 24 hours. Failure to do so will result in the immediate rejection of your application. \nAlso note that your application will be scrutinized by both the officers and the members.");
+					message.author.send("Here are the questions for you to answer. Please answer them to the best of your knowledge. \nOnce you have completed all the questions, **please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
+					message.author.send("Please complete this process within 24 hours. \nOfficers will be able to read your application once it is submitted. During your trial period, members will be able to give feedback about your stay.");
 					message.author.send("With that, here are the questions: \n1). What is your character's name? \n2). What made you choose Enrage? What are your expectations of us?");
-					if (lowerCasedMessage === '-raider') {
-						message.author.send("3). What class(es) do you raid on? \n4). Please link your Lodestone with your Achievements set to be viewed publically. \n5). Please link your fflogs. \n6). Do you have any goals as a raider? If so, describe what you hope to accomplish. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
+					if (lowerCasedMessage.indexOf('-raider') > -1) {
+						message.author.send("3). What class(es) do you raid on? \n4). Please link your Lodestone with your Achievements set to be viewed publicly. \n5). Please link your fflogs. \n6). Do you have any goals as a raider? If so, describe what you hope to achieve. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.**");
 					}
-					if (lowerCasedMessage === '-social') {
-						message.author.send("3). Name the Enrage Raider who referred you to this free company. One is required. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.** ");
+					if (lowerCasedMessage.indexOf('-social') > -1) {
+						message.author.send("3). Name the Enrage Raider who referred you to the Free Company. One is required. \n**Please copy/paste the questions and answers into the created text channel named after you in the Enrage Discord.** ");
 					}
 					message.channel.send("Very good. I have sent the application instructions directly to you. Please check your DMs.");
 				});
@@ -115,28 +115,23 @@ client.on('message', message => {
 				message.channel.send("It seems like you already have an application in place. Please wait for your current application to finish before applying for another role.");
 			}
 		}
-		if (lowerCasedMessage === '-guest') {
+		if (lowerCasedMessage.indexOf('-guest') > -1) {
 			message.member.addRole(guest);
 			message.channel.send('Very good. We hope your stay is most comfortable.');
 		}
 	}
 	if (message.channel.name === message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase()) {
-		if (lowerCasedMessage === 'yes') {
+		if (lowerCasedMessage.indexOf('yes') > -1) {
 			applicants[message.author.username] = 'true';
-			message.channel.overwritePermissions(enragemember, {
-				READ_MESSAGES: true,
-				SEND_MESSAGES: false
-			}).then(function () {
-				message.channel.send(enragemember.toString() + "(s), " + message.author.username + " has submitted an application for your discretion. Please review his answers and credentials.");
-			});
+			message.channel.send(officer.toString() + "s, " + message.author.username + " has submitted an application. Please review it.");
 		} else {
 			if (applicants[message.author.username] === 'false') {
-				message.channel.send('Have you finished your application? If so, enter "Yes" and the members will review your application. Otherwise, edit your response as necessary before submitting.');
+				message.channel.send('Have you finished your application? If so, enter "Yes" and the officers will review your application. Otherwise, edit your response as necessary before submitting.');
 			}
 		}
 	}
 	if (message.channel.name === 'recruitment') {
-		if (lowerCasedMessage === '-clear') {
+		if (lowerCasedMessage.indexOf('-clear') > -1) {
 			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
 				message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
 				return;
@@ -190,7 +185,7 @@ client.on('message', message => {
 		}
 	}
 	if (message.channel.name === 'crafts-and-supplies') {
-		if (lowerCasedMessage === '-clear') {
+		if (lowerCasedMessage.indexOf('-clear') > -1) {
 			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
 				message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
 				return;
@@ -226,7 +221,7 @@ client.on('message', message => {
 				return;
 			}
 			var parsedString = message.content.split(';');
-			if (!parsedString[1] || !parsedString[2] || !parsedString[3]) {
+			if (!parsedString[1] || !parsedString[2] || !parsedString[3] || isNaN(parseInt(parsedString[2]))) {
 				message.channel.send("There was an error processing your request. The proper formatting is");
 				message.channel.send("```-supplies ; (name) ; (total number of raid hours for the week) ; (food) ; (type of potion [optional])```");
 				return;
@@ -247,7 +242,7 @@ client.on('message', message => {
 		}
 	}
 	if (message.channel.name === 'entrance-hall') {
-		if (lowerCasedMessage === '-clear') {
+		if (lowerCasedMessage.indexOf('-clear') > -1) {
 			if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
 				message.channel.send("Apologies, you do not have the permission to execute the command \""+message.content+"\"");
 				return;
