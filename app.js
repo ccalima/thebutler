@@ -11,9 +11,11 @@ var doc = new GoogleSpreadsheet('1E1o3uWXYlDfo79pHzHkFHqGGPZjZikfCw53ITLHnNTs');
 // enrage server information
 var guild, roles, channels, members,
 officer, staticleader, raider, social, guest,
+applicants = {},
 entrancehall,
 messagesToDelete,
-lowerCasedMessage;
+lowerCasedMessage,
+applicantName;
 
 client.on('ready', () => {
 	console.log('I am ready!');
@@ -61,9 +63,11 @@ client.on('message', message => {
 		return;
 	}
 	lowerCasedMessage = message.content.toLowerCase();
+	applicantName = message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase();
 	if (message.channel.name === 'entrance-hall') {
 		if (['-raider', '-social'].indexOf(lowerCasedMessage) > -1) {
-			message.guild.createChannel(message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase().toLowerCase(), 'text')
+			applicants[applicantName] = true;
+			message.guild.createChannel(applicantName, 'text')
 				.then(function (channel) {
 					channel.overwritePermissions(message.author, {
 						READ_MESSAGES: true,
@@ -105,11 +109,14 @@ client.on('message', message => {
 			message.channel.send('Very good. We hope your stay is most comfortable.');
 		}
 	}
-	if (message.channel.name === message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase()) {
-		if (lowerCasedMessage.indexOf('yes') > -1) {
+	if (message.channel.name === applicantName) {
+		if (lowerCasedMessage ==='yes') {
+			applicants[applicantName] = false;
 			message.channel.send(officer.toString() + "s, " + message.author.username + " has submitted an application. Please review it.");
 		} else {
-			message.channel.send('Have you finished your application? If so, enter "Yes" and the officers will review your application. Otherwise, edit your response as necessary before submitting.');
+			if (aplicants[applicantName]) {
+				message.channel.send('Have you finished your application? If so, enter "Yes" and the officers will review your application. Otherwise, edit your response as necessary before submitting.');
+			}
 		}
 	}
 	if (message.channel.name === 'recruitment') {
