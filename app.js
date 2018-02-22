@@ -77,20 +77,20 @@ client.on('message', message => {
 						READ_MESSAGES: true,
 						SEND_MESSAGES: true
 					});
-					message.author.send("Here's the application for you to fill out. Please answers these questions to the best of your knowledge.\n" + 
-						"Once you have completed all the questions, **please copy/paste the questions and answers into the created text channel named " + 
+					message.author.send("Here's the application for you to fill out. Please answers these questions to the best of your knowledge.\n" +
+						"Once you have completed all the questions, **please copy/paste the questions and answers into the created text channel named " +
 						"after you in the Enrage Discord.**");
 					message.author.send("Please do so within 24 hours. After it has been submitted, your application will be reviewed by officers.");
-					message.author.send("With that, here are the questions:\n" + 
-						"1). What is your character's name?\n" + 
+					message.author.send("With that, here are the questions:\n" +
+						"1). What is your character's name?\n" +
 						"2). Why would you like to join Enrage?\n" +
 						"3). Please tell us a little bit about yourself.");
 					if (lowerCasedMessage.indexOf('-raider') > -1) {
-						message.author.send("4). Please describe your previous, and current raiding history.\n" + 
-							"5). Please link us to your FFlogs character page.\n" + 
-							"6). What jobs do you main, and what else are you able to play in raid?\n" + 
-							"7). Have you had any other raiding experience prior to FFXIV?\n" + 
-							"8). What are your goals as a raider in FFXIV, and ambition?\n" + 
+						message.author.send("4). Please describe your previous, and current raiding history.\n" +
+							"5). Please link us to your FFlogs character page.\n" +
+							"6). What jobs do you main, and what else are you able to play in raid?\n" +
+							"7). Have you had any other raiding experience prior to FFXIV?\n" +
+							"8). What are your goals as a raider in FFXIV, and ambition?\n" +
 							"9). Do you have any references or people you know within Enrage? If so, who?\n");
 					}
 					if (lowerCasedMessage.indexOf('-social') > -1) {
@@ -106,7 +106,7 @@ client.on('message', message => {
 		}
 	}
 	if (message.channel.name === message.author.username.replace(/\s+/g, '-').replace(/[^\x00-\x7F]/g, '').replace(/\W/g, '').toLowerCase()) {
-		if (lowerCasedMessage.indexOf('yes') > -1) {
+		if (lowerCasedMessage === 'yes') {
 			message.channel.send(officer.toString() + "s, " + message.author.username + " has submitted an application. Please review it.");
 		} else {
 			message.channel.send('Have you finished your application? If so, enter "Yes" and the officers will review your application. Otherwise, edit your response as necessary before submitting.');
