@@ -109,7 +109,7 @@ client.on('message', message => {
 			message.channel.send('Very good. We hope your stay is most comfortable.');
 		}
 	}
-	if (message.channel.name === applicantName && aplicants[applicantName]) {
+	if (message.channel.name === applicantName && applicants[applicantName]) {
 		if (lowerCasedMessage === 'yes') {
 			applicants[applicantName] = false;
 			message.channel.send(officer.toString() + "s, " + message.author.username + " has submitted an application. Please review it.");
